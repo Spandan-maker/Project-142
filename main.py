@@ -1,14 +1,21 @@
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from storage import all_articles, liked_articles, unliked_articles
 from demographic_filtering import output
 from content_filtering import get_recommendations
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/get-articles")
 def get_articles():
+    article_details = {
+        'title': all_articles[0][12],
+        'url': all_articles[0][11],
+        'text': all_articles[0][13]
+    }
     return jsonify({
-        "data" : all_articles[0],
+        "Data" : article_details,
         "status" : "Success"
     })
 
@@ -44,7 +51,7 @@ def popular_articles():
         }
         article_data.append(_d)
     return jsonify({
-        "data": article_data,
+        "Data": article_data,
         "status": "success"
     }), 200
 
@@ -68,7 +75,7 @@ def recommended_articles():
         }
         movie_data.append(_d)
     return jsonify({
-        "data": movie_data,
+        "Data": movie_data,
         "status": "success"
     }), 200
 
